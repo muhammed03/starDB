@@ -58,11 +58,11 @@ export type StarshipType = {
 };
 
 export interface TransformedPlanetI {
-  id: string;
-  name: string;
-  population: string;
-  rotationPeriod: string;
-  diameter: string;
+  id: null | string;
+  name: null | string;
+  population: null | string;
+  rotationPeriod: null | string;
+  diameter: null | string;
 }
 
 export interface TransformedStarshipI {
