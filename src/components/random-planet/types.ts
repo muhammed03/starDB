@@ -6,8 +6,9 @@ export interface PlanetViewPropsType {
     rotationPeriod: null | string;
     diameter: null | string;
   };
-};
+}
 
 export interface RandomPlanetStateI extends PlanetViewPropsType {
   loading: boolean;
+  error: boolean;
 }
