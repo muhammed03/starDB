@@ -56,3 +56,31 @@ export type StarshipType = {
   edited: string;
   url: string;
 };
+
+export interface TransformedPlanetI {
+  id: string;
+  name: string;
+  population: string;
+  rotationPeriod: string;
+  diameter: string;
+}
+
+export interface TransformedStarshipI {
+  id: string;
+  name: string;
+  model: string;
+  manufacturer: string;
+  costInCredits: string;
+  length: string;
+  crew: string;
+  passengers: string;
+  cargoCapacity: string;
+}
+
+export interface TransformedPersonI {
+  id: string;
+  name: string;
+  gender: string;
+  birthYear: string;
+  eyeColor: string;
+}

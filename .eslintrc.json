@@ -43,6 +43,8 @@
     "react/react-in-jsx-scope": "off",
     // disabling rule which does not allow arrow function style for component declaration
     "react/function-component-definition": "off",
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off"
   }
 }

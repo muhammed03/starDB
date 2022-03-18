@@ -1,5 +1,7 @@
 export default interface RandomPlanetStateI {
-  population: null;
-  rotationPeriod: null;
-  diameter: null;
+  id: null | string;
+  name: null | string;
+  population: null | string;
+  rotationPeriod: null | string;
+  diameter: null | string;
 }
