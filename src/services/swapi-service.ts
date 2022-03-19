@@ -22,7 +22,7 @@ export default class SwapiService {
 
   async getAllPeople(): Promise<Array<TransformedPersonI>> {
     const res = await this.getResource(`/people/`);
-    return res.results.map(this._transfomPerson);
+    return res.results.map(this._transfomPerson).slice(0, 5);
   }
 
   async getPerson(id: string): Promise<TransformedPersonI> {

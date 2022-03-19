@@ -2,16 +2,21 @@ import React, { Component } from "react";
 
 import Header from "../header";
 import RandomPlanet from "../random-planet";
-import ItemList from "../item-list";
-import PersonDetails from "../person-details";
 
 import "./app.css";
+import PeoplePage from "../people-page";
+import ErrorIndicator from "../error-indicator";
+import ErrorButton from "../error-button";
 
-export default class App extends Component<{}, AppI> {
+export default class App extends Component<{}, AppStateI> {
   state = {
     showRandomPlanet: true,
-    selectedPerson: "5",
+    hasError: false,
   };
+
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
 
   toggleRandomPlanet = () => {
     this.setState((state) => {
@@ -21,44 +26,38 @@ export default class App extends Component<{}, AppI> {
     });
   };
 
-  onPersonSelected = (id: string) => {
-    this.setState({
-      selectedPerson: id,
-    });
-  };
-
   render() {
-    const { showRandomPlanet, selectedPerson } = this.state;
+    const { showRandomPlanet, hasError } = this.state;
 
     const randomPlanet = showRandomPlanet ? <RandomPlanet /> : null;
+
+    if (hasError) {
+      return <ErrorIndicator />;
+    }
 
     return (
       <div>
         <Header />
         {randomPlanet}
-
-        <button
-          type="button"
-          className="toggle-planet btn btn-warning btn-lg"
-          onClick={this.toggleRandomPlanet}
-        >
-          Toggle Random Planet
-        </button>
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onItemSelected={this.onPersonSelected} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={selectedPerson} />
-          </div>
+        <div className="buttons-container">
+          <button
+            type="button"
+            className="toggle-planet btn btn-warning btn-lg"
+            onClick={this.toggleRandomPlanet}
+          >
+            Toggle Random Planet
+          </button>
+          <ErrorButton />
         </div>
+        <PeoplePage />
+        <PeoplePage />
+        <PeoplePage />
       </div>
     );
   }
 }
 
-interface AppI {
+interface AppStateI {
   showRandomPlanet: boolean;
-  selectedPerson: null | string;
+  hasError: boolean;
 }

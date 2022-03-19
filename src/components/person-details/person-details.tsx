@@ -4,6 +4,7 @@ import "./person-details.css";
 import SwapiService from "../../services/swapi-service";
 import { TransformedPersonI } from "~/services/types";
 import Spinner from "../spinner";
+import ErrorButton from "../error-button";
 
 const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ person }) => {
   const { id, name, gender, birthYear, eyeColor } = person;
@@ -31,6 +32,7 @@ const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ person }) => {
             <span>{eyeColor}</span>
           </li>
         </ul>
+        <ErrorButton />
       </div>
     </>
   );
