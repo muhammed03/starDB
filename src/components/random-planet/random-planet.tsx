@@ -46,7 +46,7 @@ export default class RandomPlanet extends Component<
   {},
   RandomPlanetStateI
 > {
-  private swapiService = new SwapiService();
+  swapiService = new SwapiService();
 
   state = {
     planet: {
@@ -60,8 +60,17 @@ export default class RandomPlanet extends Component<
     error: false,
   };
 
+  private interval: NodeJS.Timeout | undefined;
+
   componentDidMount() {
     this.updatePlanet();
+    this.interval = setInterval(this.updatePlanet, 10000);
+  }
+
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   onPlanetLoaded = (planet: TransformedPlanetI): void => {
@@ -75,13 +84,13 @@ export default class RandomPlanet extends Component<
     });
   };
 
-  updatePlanet() {
+  updatePlanet = () => {
     const id = Math.floor(Math.random() * 25) + 2;
     this.swapiService
       .getPlanet(id.toString())
       .then(this.onPlanetLoaded)
       .catch(this.onError);
-  }
+  };
 
   render() {
     const { planet, loading, error } = this.state;
