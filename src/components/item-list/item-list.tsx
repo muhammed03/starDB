@@ -1,35 +1,43 @@
 import React, { Component } from "react";
 
 import "./item-list.css";
-import SwapiService from "../../services/swapi-service";
 import Spinner from "../spinner";
-import { TransformedPersonI } from "~/services/types";
+import {
+  ListItemI,
+  TransformedPersonI,
+  TransformedPlanetI,
+  TransformedStarshipI,
+} from "~/services/types";
 
 export default class ItemList extends Component<
   ItemListPropsType,
   ItemListStateI
 > {
-  swapiService = new SwapiService();
-
   state = {
-    peopleList: null,
+    itemList: null,
   };
 
   componentDidMount() {
-    this.swapiService.getAllPeople().then((peopleList) => {
+    const { getData } = this.props;
+
+    getData().then((itemList) => {
       this.setState({
-        peopleList,
+        itemList,
       });
     });
   }
 
-  renderItems(arr: TransformedPersonI[]) {
-    const { onItemSelected } = this.props;
-    return arr.map(({ id, name }) => {
+  renderItems(
+    arr: TransformedPersonI[] | TransformedStarshipI[] | TransformedPlanetI[]
+  ) {
+    const { onItemSelected, renderItem } = this.props;
+    return arr.map((item) => {
+      const { id } = item;
+      const label = renderItem(item);
       return (
         <li className="list-group-item" key={id}>
           <button type="button" onClick={() => onItemSelected(id)}>
-            {name}
+            {label}
           </button>
         </li>
       );
@@ -37,22 +45,31 @@ export default class ItemList extends Component<
   }
 
   render() {
-    const { peopleList } = this.state;
+    const { itemList } = this.state;
 
-    if (!peopleList) {
+    if (!itemList) {
       return <Spinner />;
     }
 
-    const items = this.renderItems(peopleList);
+    const items = this.renderItems(itemList);
 
     return <ul className="item-list list-group">{items}</ul>;
   }
 }
 
 type ItemListPropsType = {
-  onItemSelected: (id: string) => void;
+  onItemSelected: (id: string | null) => void;
+  getData: () =>
+    | Promise<TransformedPlanetI[]>
+    | Promise<TransformedPersonI[]>
+    | Promise<TransformedStarshipI[]>;
+  renderItem: (item: ListItemI) => string | null;
 };
 
 interface ItemListStateI {
-  peopleList: null | TransformedPersonI[];
+  itemList:
+    | null
+    | TransformedPlanetI[]
+    | TransformedPersonI[]
+    | TransformedStarshipI[];
 }

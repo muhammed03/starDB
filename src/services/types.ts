@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export type PersonType = {
   birth_year: string;
   eye_color: string;
@@ -84,3 +82,8 @@ export interface TransformedPersonI {
   birthYear: string;
   eyeColor: string;
 }
+
+export type ListItemI =
+  | TransformedPersonI
+  | TransformedPlanetI
+  | TransformedStarshipI;
