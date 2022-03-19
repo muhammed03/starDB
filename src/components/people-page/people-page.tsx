@@ -33,22 +33,25 @@ export default class PeoplePage extends Component<{}, PeoplePageStateI> {
     if (hasError) {
       return <ErrorIndicator />;
     }
+
+    const itemList = (
+      <ItemList
+        onItemSelected={this.onPersonSelected}
+        getData={this.swapiService.getAllPeople}
+        renderItem={(item: ListItemI) =>
+          `${item.name} (${"gender" in item ? item.gender : null}, ${
+            "birthYear" in item ? item.birthYear : null
+          })`
+        }
+      />
+    );
+
+    const personDetails = <PersonDetails personId={selectedPerson} />;
+
     return (
       <div className="row mb2 person-details-container">
-        <div className="col-md-6">
-          <ItemList
-            onItemSelected={this.onPersonSelected}
-            getData={this.swapiService.getAllPeople}
-            renderItem={(item: ListItemI) =>
-              `${item.name} (${"gender" in item ? item.gender : null}, ${
-                "birthYear" in item ? item.birthYear : null
-              })`
-            }
-          />
-        </div>
-        <div className="col-md-6">
-          <PersonDetails personId={selectedPerson} />
-        </div>
+        <div className="col-md-6">{itemList}</div>
+        <div className="col-md-6">{personDetails}</div>
       </div>
     );
   }

@@ -7,18 +7,11 @@ import "./app.css";
 import PeoplePage from "../people-page";
 import ErrorIndicator from "../error-indicator";
 import ErrorButton from "../error-button";
-import ItemList from "../item-list";
-import PersonDetails from "../person-details";
-import SwapiService from "../../services/swapi-service";
-import { ListItemI } from "~/services/types";
 
 export default class App extends Component<{}, AppStateI> {
-  swapiService = new SwapiService();
-
   state = {
     showRandomPlanet: true,
     hasError: false,
-    selectedPerson: null,
   };
 
   componentDidCatch() {
@@ -33,14 +26,8 @@ export default class App extends Component<{}, AppStateI> {
     });
   };
 
-  onItemSelected = (id: string | null) => {
-    this.setState({
-      selectedPerson: id,
-    });
-  };
-
   render() {
-    const { showRandomPlanet, hasError, selectedPerson } = this.state;
+    const { showRandomPlanet, hasError } = this.state;
 
     const randomPlanet = showRandomPlanet ? <RandomPlanet /> : null;
 
@@ -63,32 +50,6 @@ export default class App extends Component<{}, AppStateI> {
           <ErrorButton />
         </div>
         <PeoplePage />
-
-        <div className="row mb2 person-details-container">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onItemSelected}
-              getData={this.swapiService.getAllPlanets}
-              renderItem={(item: ListItemI) => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={selectedPerson} />
-          </div>
-        </div>
-
-        <div className="row mb2 person-details-container">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onItemSelected}
-              getData={this.swapiService.getAllStarships}
-              renderItem={(item: ListItemI) => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={selectedPerson} />
-          </div>
-        </div>
       </div>
     );
   }
@@ -97,5 +58,4 @@ export default class App extends Component<{}, AppStateI> {
 interface AppStateI {
   showRandomPlanet: boolean;
   hasError: boolean;
-  selectedPerson: string | null;
 }
