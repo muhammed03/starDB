@@ -5,3 +5,11 @@
 .item-list .list-group-item:hover {
   background-color: #444;
 }
+
+.list-group-item button {
+  background: transparent;
+  height: 100%;
+  width: 100%;
+  border: none;
+  color: white;
+}

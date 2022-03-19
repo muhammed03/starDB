@@ -4,7 +4,7 @@ import SwapiService from "../../services/swapi-service";
 
 import "./random-planet.css";
 import { RandomPlanetStateI, PlanetViewPropsType } from "./types";
-import { TransformedPlanetI } from "../../services/types";
+import { TransformedPlanetI } from "~/services/types";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
 
@@ -46,14 +46,7 @@ export default class RandomPlanet extends Component<
   {},
   RandomPlanetStateI
 > {
-  swapiService = new SwapiService();
-
-  constructor() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    super();
-    this.updatePlanet();
-  }
+  private swapiService = new SwapiService();
 
   state = {
     planet: {
@@ -67,6 +60,10 @@ export default class RandomPlanet extends Component<
     error: false,
   };
 
+  componentDidMount() {
+    this.updatePlanet();
+  }
+
   onPlanetLoaded = (planet: TransformedPlanetI): void => {
     this.setState({ planet, loading: false });
   };
@@ -79,9 +76,9 @@ export default class RandomPlanet extends Component<
   };
 
   updatePlanet() {
-    const id = Math.floor(Math.random() * 25) + 20000;
+    const id = Math.floor(Math.random() * 25) + 2;
     this.swapiService
-      .getPlanet(id)
+      .getPlanet(id.toString())
       .then(this.onPlanetLoaded)
       .catch(this.onError);
   }

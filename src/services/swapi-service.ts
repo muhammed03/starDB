@@ -25,7 +25,7 @@ export default class SwapiService {
     return res.results.map(this._transfomPerson);
   }
 
-  async getPerson(id: number): Promise<TransformedPersonI> {
+  async getPerson(id: string): Promise<TransformedPersonI> {
     const person = await this.getResource(`/people/${id}`);
     return this._transfomPerson(person);
   }
@@ -35,7 +35,7 @@ export default class SwapiService {
     return res.results.map(this._transformPlanet);
   }
 
-  async getPlanet(id: number): Promise<TransformedPlanetI> {
+  async getPlanet(id: string): Promise<TransformedPlanetI> {
     const planet = await this.getResource(`/planets/${id}`);
     return this._transformPlanet(planet);
   }
@@ -45,7 +45,7 @@ export default class SwapiService {
     return res.results.map(this._transformStarship);
   }
 
-  async getStarship(id: number): Promise<TransformedStarshipI> {
+  async getStarship(id: string): Promise<TransformedStarshipI> {
     const starship = await this.getResource(`/starships/${id}`);
     return this._transformStarship(starship);
   }
@@ -55,7 +55,7 @@ export default class SwapiService {
     return item.match(idRegExp)![1];
   }
 
-  _transfomPerson(person: PersonType): TransformedPersonI {
+  _transfomPerson = (person: PersonType): TransformedPersonI => {
     return {
       id: this._extractId(person.url),
       name: person.name,
@@ -63,9 +63,9 @@ export default class SwapiService {
       birthYear: person.birth_year,
       eyeColor: person.eye_color,
     };
-  }
+  };
 
-  _transformPlanet(planet: PlanetType): TransformedPlanetI {
+  _transformPlanet = (planet: PlanetType): TransformedPlanetI => {
     return {
       id: this._extractId(planet.url),
       name: planet.name,
@@ -73,9 +73,9 @@ export default class SwapiService {
       rotationPeriod: planet.rotation_period,
       diameter: planet.diameter,
     };
-  }
+  };
 
-  _transformStarship(starship: StarshipType): TransformedStarshipI {
+  _transformStarship = (starship: StarshipType): TransformedStarshipI => {
     return {
       id: this._extractId(starship.url),
       name: starship.name,
@@ -87,5 +87,5 @@ export default class SwapiService {
       passengers: starship.passengers,
       cargoCapacity: starship.cargo_capacity,
     };
-  }
+  };
 }
