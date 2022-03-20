@@ -49,6 +49,8 @@
     "@typescript-eslint/ban-types": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "max-classes-per-file": ["error", 2]
+    "max-classes-per-file": ["error", 2],
+    "react/require-default-props": "off",
+    "react/display-name": "off"
   }
 }

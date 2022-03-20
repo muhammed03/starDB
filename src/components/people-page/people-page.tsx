@@ -53,7 +53,9 @@ export default class PeoplePage extends Component<{}, PeoplePageStateI> {
           itemId={selectedPerson}
           getData={this.swapiService.getPerson}
           getImageUrl={this.swapiService.getPersonImage}
-        />
+        >
+          {null}
+        </ItemDetails>
       </ErrorBoundary>
     );
 

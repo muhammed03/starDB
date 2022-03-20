@@ -4,12 +4,11 @@ import Header from "../header";
 import RandomPlanet from "../random-planet";
 
 import "./app.css";
-import PeoplePage from "../people-page";
 import ErrorIndicator from "../error-indicator";
-import ErrorButton from "../error-button";
 import Row from "../row";
-import ItemDetails from "../item-details";
+import ItemDetails, { Record } from "../item-details/item-details";
 import SwapiService from "../../services/swapi-service";
+import PeoplePage from "../people-page";
 
 export default class App extends Component<{}, AppStateI> {
   swapiService = new SwapiService();
@@ -40,11 +39,10 @@ export default class App extends Component<{}, AppStateI> {
       this.swapiService;
 
     const personDetails = (
-      <ItemDetails
-        itemId="11"
-        getData={getPerson}
-        getImageUrl={getPersonImage}
-      />
+      <ItemDetails itemId="11" getData={getPerson} getImageUrl={getPersonImage}>
+        <Record field="gender" label="Gender" item={null} />
+        <Record field="eyeColor" label="Eye Color" item={null} />
+      </ItemDetails>
     );
 
     const starshipDetails = (
@@ -52,7 +50,11 @@ export default class App extends Component<{}, AppStateI> {
         itemId="5"
         getData={getStarship}
         getImageUrl={getStarshipImage}
-      />
+      >
+        <Record field="model" label="Model" item={null} />
+        <Record field="length" label="Length" item={null} />
+        <Record field="passengers" label="Passengers" item={null} />
+      </ItemDetails>
     );
 
     if (hasError) {
@@ -73,7 +75,7 @@ export default class App extends Component<{}, AppStateI> {
         {/*  </button> */}
         {/*  <ErrorButton /> */}
         {/* </div> */}
-        {/* <PeoplePage /> */}
+        <PeoplePage />
         <Row left={personDetails} right={starshipDetails} />
       </div>
     );

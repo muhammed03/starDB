@@ -1,48 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, Children } from "react";
 
 import "./item-details.css";
-import SwapiService from "../../services/swapi-service";
-import { ListItemI, TransformedPersonI } from "~/services/types";
+import { ListItemI } from "~/services/types";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
 
-const ItemDetailView: React.FC<PersonDetailsViewPropsType> = ({
-  item,
-  image,
-}) => {
-  const { id, name, gender, birthYear, eyeColor } = item;
+const Record: React.FC<{
+  item: any;
+  field: string;
+  label: string;
+}> = ({ item, field, label }) => {
   return (
-    <>
-      <img alt="character" className="item-image" src={image} />
-
-      <div className="card-body">
-        <h4>{name}</h4>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">
-            <span className="term">Gender</span>
-            <span>{gender}</span>
-          </li>
-          <li className="list-group-item">
-            <span className="term">Birth Year</span>
-            <span>{birthYear}</span>
-          </li>
-          <li className="list-group-item">
-            <span className="term">Eye Color</span>
-            <span>{eyeColor}</span>
-          </li>
-        </ul>
-        <ErrorButton />
-      </div>
-    </>
+    <li className="list-group-item">
+      <span className="term">{label}</span>
+      <span>{item[field]}</span>
+    </li>
   );
 };
+
+export { Record };
 
 export default class ItemDetails extends Component<
   PersonDetailsPropsType,
   PersonDetailsStateI
 > {
-  swapiService = new SwapiService();
-
   state = {
     item: null,
     loading: true,
@@ -77,19 +58,37 @@ export default class ItemDetails extends Component<
 
   render() {
     const { item, loading, image } = this.state;
+    const { children } = this.props;
 
     if (!item) {
       return <span>Select a item from a list</span>;
     }
 
+    const { id, name, gender, birthYear, eyeColor } = item;
+
     const spinner = loading ? <Spinner /> : null;
-    const content = !loading ? (
-      <ItemDetailView item={item} image={image} />
-    ) : null;
+
     return (
       <div className="item-details card">
-        {spinner}
-        {content}
+        {loading ? (
+          spinner
+        ) : (
+          <>
+            <img alt="character" className="item-image" src={image} />
+
+            <div className="card-body">
+              <h4>{name}</h4>
+              <ul className="list-group list-group-flush">
+                {React.Children.map(children, (child, idx) => {
+                  return React.cloneElement(child as React.ReactElement, {
+                    item,
+                  });
+                })}
+              </ul>
+              <ErrorButton />
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -99,6 +98,7 @@ type PersonDetailsPropsType = {
   itemId: string | null;
   getData: (id: string) => Promise<ListItemI>;
   getImageUrl: ({ id }: ListItemI) => string;
+  children: JSX.Element[] | null;
 };
 
 interface PersonDetailsStateI {
@@ -106,8 +106,3 @@ interface PersonDetailsStateI {
   loading: boolean;
   image: null | string;
 }
-
-type PersonDetailsViewPropsType = {
-  item: TransformedPersonI;
-  image: string;
-};
