@@ -2,19 +2,18 @@ import React, { Component } from "react";
 
 import "./item-details.css";
 import SwapiService from "../../services/swapi-service";
-import { TransformedPersonI } from "~/services/types";
+import { ListItemI, TransformedPersonI } from "~/services/types";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
 
-const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ item }) => {
+const ItemDetailView: React.FC<PersonDetailsViewPropsType> = ({
+  item,
+  image,
+}) => {
   const { id, name, gender, birthYear, eyeColor } = item;
   return (
     <>
-      <img
-        alt="character"
-        className="item-image"
-        src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-      />
+      <img alt="character" className="item-image" src={image} />
 
       <div className="card-body">
         <h4>{name}</h4>
@@ -47,21 +46,22 @@ export default class ItemDetails extends Component<
   state = {
     item: null,
     loading: true,
+    image: "",
   };
 
   componentDidMount() {
-    this.updatePerson();
+    this.updateItem();
   }
 
   componentDidUpdate(prevProps: PersonDetailsPropsType) {
     const { itemId } = this.props;
     if (itemId !== prevProps.itemId) {
-      this.updatePerson();
+      this.updateItem();
     }
   }
 
-  updatePerson() {
-    const { itemId } = this.props;
+  updateItem() {
+    const { itemId, getData, getImageUrl } = this.props;
     if (!itemId) {
       return;
     }
@@ -70,20 +70,22 @@ export default class ItemDetails extends Component<
       loading: true,
     });
 
-    this.swapiService.getPerson(itemId).then((item) => {
-      this.setState({ item, loading: false });
+    getData(itemId).then((item) => {
+      this.setState({ item, loading: false, image: getImageUrl(item) });
     });
   }
 
   render() {
-    const { item, loading } = this.state;
+    const { item, loading, image } = this.state;
 
     if (!item) {
       return <span>Select a item from a list</span>;
     }
 
     const spinner = loading ? <Spinner /> : null;
-    const content = !loading ? <PersonDetailView item={item} /> : null;
+    const content = !loading ? (
+      <ItemDetailView item={item} image={image} />
+    ) : null;
     return (
       <div className="item-details card">
         {spinner}
@@ -95,13 +97,17 @@ export default class ItemDetails extends Component<
 
 type PersonDetailsPropsType = {
   itemId: string | null;
+  getData: (id: string) => Promise<ListItemI>;
+  getImageUrl: ({ id }: ListItemI) => string;
 };
 
 interface PersonDetailsStateI {
-  item: null | TransformedPersonI;
+  item: null | ListItemI;
   loading: boolean;
+  image: null | string;
 }
 
 type PersonDetailsViewPropsType = {
   item: TransformedPersonI;
+  image: string;
 };

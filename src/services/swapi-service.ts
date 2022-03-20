@@ -1,4 +1,5 @@
 import {
+  ListItemI,
   PersonType,
   PlanetType,
   StarshipType,
@@ -9,6 +10,8 @@ import {
 
 export default class SwapiService {
   baseUrl = "https://swapi.dev/api";
+
+  _imageBase = "https://starwars-visualguide.com/assets/img";
 
   async getResource(url: string) {
     const res = await fetch(`${this.baseUrl}${url}`);
@@ -48,6 +51,18 @@ export default class SwapiService {
   getStarship = async (id: string): Promise<TransformedStarshipI> => {
     const starship = await this.getResource(`/starships/${id}`);
     return this._transformStarship(starship);
+  };
+
+  getPersonImage = ({ id }: ListItemI) => {
+    return `${this._imageBase}/characters/${id}.jpg`;
+  };
+
+  getStarshipImage = ({ id }: ListItemI) => {
+    return `${this._imageBase}/starships/${id}.jpg`;
+  };
+
+  getPlanetImage = ({ id }: ListItemI) => {
+    return `${this._imageBase}/planets/${id}.jpg`;
   };
 
   _extractId(item: string) {

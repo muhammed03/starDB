@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./people-page.css";
 import ItemList from "../item-list";
-import ItemDetails from "../person-details";
+import ItemDetails from "../item-details";
 import ErrorIndicator from "../error-indicator";
 import SwapiService from "../../services/swapi-service";
 import { ListItemI } from "~/services/types";
@@ -49,7 +49,11 @@ export default class PeoplePage extends Component<{}, PeoplePageStateI> {
 
     const personDetails = (
       <ErrorBoundary>
-        <ItemDetails itemId={selectedPerson} />
+        <ItemDetails
+          itemId={selectedPerson}
+          getData={this.swapiService.getPerson}
+          getImageUrl={this.swapiService.getPersonImage}
+        />
       </ErrorBoundary>
     );
 
