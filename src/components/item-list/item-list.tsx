@@ -30,10 +30,10 @@ export default class ItemList extends Component<
   renderItems(
     arr: TransformedPersonI[] | TransformedStarshipI[] | TransformedPlanetI[]
   ) {
-    const { onItemSelected, renderItem } = this.props;
+    const { onItemSelected, children } = this.props;
     return arr.map((item) => {
       const { id } = item;
-      const label = renderItem(item);
+      const label = children(item);
       return (
         <li className="list-group-item" key={id}>
           <button type="button" onClick={() => onItemSelected(id)}>
@@ -63,7 +63,7 @@ type ItemListPropsType = {
     | Promise<TransformedPlanetI[]>
     | Promise<TransformedPersonI[]>
     | Promise<TransformedStarshipI[]>;
-  renderItem: (item: ListItemI) => string | null;
+  children: (item: ListItemI) => string | null;
 };
 
 interface ItemListStateI {
