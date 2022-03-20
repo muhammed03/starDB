@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 
-import "./person-details.css";
+import "./item-details.css";
 import SwapiService from "../../services/swapi-service";
 import { TransformedPersonI } from "~/services/types";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
 
-const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ person }) => {
-  const { id, name, gender, birthYear, eyeColor } = person;
+const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ item }) => {
+  const { id, name, gender, birthYear, eyeColor } = item;
   return (
     <>
       <img
         alt="character"
-        className="person-image"
+        className="item-image"
         src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
       />
 
@@ -38,14 +38,14 @@ const PersonDetailView: React.FC<PersonDetailsViewPropsType> = ({ person }) => {
   );
 };
 
-export default class PersonDetails extends Component<
+export default class ItemDetails extends Component<
   PersonDetailsPropsType,
   PersonDetailsStateI
 > {
   swapiService = new SwapiService();
 
   state = {
-    person: null,
+    item: null,
     loading: true,
   };
 
@@ -54,15 +54,15 @@ export default class PersonDetails extends Component<
   }
 
   componentDidUpdate(prevProps: PersonDetailsPropsType) {
-    const { personId } = this.props;
-    if (personId !== prevProps.personId) {
+    const { itemId } = this.props;
+    if (itemId !== prevProps.itemId) {
       this.updatePerson();
     }
   }
 
   updatePerson() {
-    const { personId } = this.props;
-    if (!personId) {
+    const { itemId } = this.props;
+    if (!itemId) {
       return;
     }
 
@@ -70,22 +70,22 @@ export default class PersonDetails extends Component<
       loading: true,
     });
 
-    this.swapiService.getPerson(personId).then((person) => {
-      this.setState({ person, loading: false });
+    this.swapiService.getPerson(itemId).then((item) => {
+      this.setState({ item, loading: false });
     });
   }
 
   render() {
-    const { person, loading } = this.state;
+    const { item, loading } = this.state;
 
-    if (!person) {
-      return <span>Select a person from a list</span>;
+    if (!item) {
+      return <span>Select a item from a list</span>;
     }
 
     const spinner = loading ? <Spinner /> : null;
-    const content = !loading ? <PersonDetailView person={person} /> : null;
+    const content = !loading ? <PersonDetailView item={item} /> : null;
     return (
-      <div className="person-details card">
+      <div className="item-details card">
         {spinner}
         {content}
       </div>
@@ -94,14 +94,14 @@ export default class PersonDetails extends Component<
 }
 
 type PersonDetailsPropsType = {
-  personId: string | null;
+  itemId: string | null;
 };
 
 interface PersonDetailsStateI {
-  person: null | TransformedPersonI;
+  item: null | TransformedPersonI;
   loading: boolean;
 }
 
 type PersonDetailsViewPropsType = {
-  person: TransformedPersonI;
+  item: TransformedPersonI;
 };
