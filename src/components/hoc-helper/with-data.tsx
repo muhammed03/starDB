@@ -8,7 +8,7 @@ import {
 } from "../../services/types";
 
 const withData = (View: React.FC<ItemListPropsType>, getData: GetDataType) => {
-  return class extends Component<WithDataPropsType, WithDataStateI> {
+  return class extends Component<ItemListPropsType, WithDataStateI> {
     state = {
       data: null,
     };
@@ -33,9 +33,9 @@ const withData = (View: React.FC<ItemListPropsType>, getData: GetDataType) => {
 };
 
 type ItemListPropsType = {
-  onItemSelected: (id: string | null) => void;
+  onItemSelected?: (id: string | null) => void;
   children: (item: ListItemI) => string | null;
-  data: TransformedPlanetI[] | TransformedPersonI[] | TransformedStarshipI[];
+  data?: TransformedPlanetI[] | TransformedPersonI[] | TransformedStarshipI[];
 };
 
 type GetDataType = () =>
@@ -44,7 +44,7 @@ type GetDataType = () =>
   | Promise<TransformedStarshipI[]>;
 
 type WithDataPropsType = {
-  onItemSelected: (id: string | null) => void;
+  onItemSelected?: (id: string | null) => void;
   getData: GetDataType;
   children: (item: ListItemI) => string | null;
 };

@@ -61,6 +61,7 @@ export interface TransformedPlanetI {
   population: null | string;
   rotationPeriod: null | string;
   diameter: null | string;
+  [key: string]: string | null;
 }
 
 export interface TransformedStarshipI {
@@ -73,6 +74,7 @@ export interface TransformedStarshipI {
   crew: string;
   passengers: string;
   cargoCapacity: string;
+  [key: string]: string | number;
 }
 
 export interface TransformedPersonI {
@@ -81,6 +83,7 @@ export interface TransformedPersonI {
   gender: string;
   birthYear: string;
   eyeColor: string;
+  [key: string]: string;
 }
 
 export type ListItemI =

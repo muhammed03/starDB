@@ -5,9 +5,10 @@ import ItemList from "../item-list";
 import ItemDetails from "../item-details";
 import ErrorIndicator from "../error-indicator";
 import SwapiService from "../../services/swapi-service";
-import { ListItemI } from "~/services/types";
+import { ListItemI } from "../../services/types";
 import Row from "../row";
 import ErrorBoundary from "../error-boundary";
+import { Record } from "../item-details/item-details";
 
 export default class PeoplePage extends Component<{}, PeoplePageStateI> {
   swapiService = new SwapiService();
@@ -37,10 +38,7 @@ export default class PeoplePage extends Component<{}, PeoplePageStateI> {
     }
 
     const itemList = (
-      <ItemList
-        onItemSelected={this.onPersonSelected}
-        getData={this.swapiService.getAllPeople}
-      >
+      <ItemList onItemSelected={this.onPersonSelected}>
         {(item: ListItemI) =>
           `${item.name} ( ${"birthYear" in item ? item.birthYear : null})`
         }
@@ -54,7 +52,9 @@ export default class PeoplePage extends Component<{}, PeoplePageStateI> {
           getData={this.swapiService.getPerson}
           getImageUrl={this.swapiService.getPersonImage}
         >
-          {null}
+          <Record field="gender" label="Gender" />
+          <Record field="birthYear" label="Birth Year" />
+          <Record field="eyeColor" label="Eye Color" />
         </ItemDetails>
       </ErrorBoundary>
     );

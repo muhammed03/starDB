@@ -5,10 +5,10 @@ import RandomPlanet from "../random-planet";
 
 import "./app.css";
 import ErrorIndicator from "../error-indicator";
-import Row from "../row";
 import ItemDetails, { Record } from "../item-details/item-details";
 import SwapiService from "../../services/swapi-service";
-import PeoplePage from "../people-page";
+import { PersonList, PlanetList, StarshipList } from "../sw-components";
+import { ListItemI } from "~/services/types";
 
 export default class App extends Component<{}, AppStateI> {
   swapiService = new SwapiService();
@@ -35,13 +35,18 @@ export default class App extends Component<{}, AppStateI> {
 
     const randomPlanet = showRandomPlanet ? <RandomPlanet /> : null;
 
-    const { getPerson, getStarship, getPersonImage, getStarshipImage } =
-      this.swapiService;
+    const {
+      getPerson,
+      getStarship,
+      getPersonImage,
+      getStarshipImage,
+      getAllPeople,
+    } = this.swapiService;
 
     const personDetails = (
       <ItemDetails itemId="11" getData={getPerson} getImageUrl={getPersonImage}>
-        <Record field="gender" label="Gender" item={null} />
-        <Record field="eyeColor" label="Eye Color" item={null} />
+        <Record field="gender" label="Gender" />
+        <Record field="eyeColor" label="Eye Color" />
       </ItemDetails>
     );
 
@@ -51,9 +56,9 @@ export default class App extends Component<{}, AppStateI> {
         getData={getStarship}
         getImageUrl={getStarshipImage}
       >
-        <Record field="model" label="Model" item={null} />
-        <Record field="length" label="Length" item={null} />
-        <Record field="passengers" label="Passengers" item={null} />
+        <Record field="model" label="Model" />
+        <Record field="length" label="Length" />
+        <Record field="passengers" label="Passengers" />
       </ItemDetails>
     );
 
@@ -64,19 +69,9 @@ export default class App extends Component<{}, AppStateI> {
     return (
       <div>
         <Header />
-        {/* {randomPlanet} */}
-        {/* <div className="buttons-container"> */}
-        {/*  <button */}
-        {/*    type="button" */}
-        {/*    className="toggle-planet btn btn-warning btn-lg" */}
-        {/*    onClick={this.toggleRandomPlanet} */}
-        {/*  > */}
-        {/*    Toggle Random Planet */}
-        {/*  </button> */}
-        {/*  <ErrorButton /> */}
-        {/* </div> */}
-        <PeoplePage />
-        <Row left={personDetails} right={starshipDetails} />
+        <PersonList>{(item: ListItemI) => `${item.name}`}</PersonList>
+        <StarshipList>{(item: ListItemI) => `${item.name}`}</StarshipList>
+        <PlanetList>{(item: ListItemI) => `${item.name}`}</PlanetList>
       </div>
     );
   }

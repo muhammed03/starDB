@@ -1,19 +1,19 @@
 import React, { Component, Children } from "react";
 
 import "./item-details.css";
-import { ListItemI } from "~/services/types";
+import { ListItemI } from "../../services/types";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
 
 const Record: React.FC<{
-  item: any;
+  item?: ListItemI;
   field: string;
   label: string;
 }> = ({ item, field, label }) => {
   return (
     <li className="list-group-item">
       <span className="term">{label}</span>
-      <span>{item[field]}</span>
+      <span>{item ? item[field] : null}</span>
     </li>
   );
 };
@@ -21,8 +21,8 @@ const Record: React.FC<{
 export { Record };
 
 export default class ItemDetails extends Component<
-  PersonDetailsPropsType,
-  PersonDetailsStateI
+  ItemDetailsPropsType,
+  ItemDetailsStateI
 > {
   state = {
     item: null,
@@ -34,7 +34,7 @@ export default class ItemDetails extends Component<
     this.updateItem();
   }
 
-  componentDidUpdate(prevProps: PersonDetailsPropsType) {
+  componentDidUpdate(prevProps: ItemDetailsPropsType) {
     const { itemId } = this.props;
     if (itemId !== prevProps.itemId) {
       this.updateItem();
@@ -94,14 +94,14 @@ export default class ItemDetails extends Component<
   }
 }
 
-type PersonDetailsPropsType = {
+type ItemDetailsPropsType = {
   itemId: string | null;
   getData: (id: string) => Promise<ListItemI>;
   getImageUrl: ({ id }: ListItemI) => string;
   children: JSX.Element[] | null;
 };
 
-interface PersonDetailsStateI {
+interface ItemDetailsStateI {
   item: null | ListItemI;
   loading: boolean;
   image: null | string;
