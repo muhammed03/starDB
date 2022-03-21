@@ -7,8 +7,16 @@ import "./app.css";
 import ErrorIndicator from "../error-indicator";
 import ItemDetails, { Record } from "../item-details/item-details";
 import SwapiService from "../../services/swapi-service";
-import { PersonList, PlanetList, StarshipList } from "../sw-components";
+import {
+  PersonDetails,
+  PersonList,
+  PlanetDetails,
+  PlanetList,
+  StarshipDetails,
+  StarshipList,
+} from "../sw-components";
 import { ListItemI } from "~/services/types";
+import ErrorBoundary from "../error-boundary";
 
 export default class App extends Component<{}, AppStateI> {
   swapiService = new SwapiService();
@@ -69,6 +77,11 @@ export default class App extends Component<{}, AppStateI> {
     return (
       <div>
         <Header />
+        <ErrorBoundary>
+          <PersonDetails itemId="11" />
+        </ErrorBoundary>
+        <PlanetDetails itemId="5" />
+        <StarshipDetails itemId="9" />
         <PersonList>{(item: ListItemI) => `${item.name}`}</PersonList>
         <StarshipList>{(item: ListItemI) => `${item.name}`}</StarshipList>
         <PlanetList>{(item: ListItemI) => `${item.name}`}</PlanetList>
