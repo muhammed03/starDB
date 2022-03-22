@@ -34,7 +34,6 @@ const withData = (View: React.FC<ItemListPropsType>, getData: GetDataType) => {
 
 type ItemListPropsType = {
   onItemSelected?: (id: string | null) => void;
-  children: (item: ListItemI) => string | null;
   data?: TransformedPlanetI[] | TransformedPersonI[] | TransformedStarshipI[];
 };
 
@@ -42,12 +41,6 @@ type GetDataType = () =>
   | Promise<TransformedPlanetI[]>
   | Promise<TransformedPersonI[]>
   | Promise<TransformedStarshipI[]>;
-
-type WithDataPropsType = {
-  onItemSelected?: (id: string | null) => void;
-  getData: GetDataType;
-  children: (item: ListItemI) => string | null;
-};
 
 interface WithDataStateI {
   data:

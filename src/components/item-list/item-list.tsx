@@ -9,7 +9,7 @@ import {
   TransformedStarshipI,
 } from "../../services/types";
 
-type ItemListPropsType = {
+export type ItemListPropsType = {
   onItemSelected?: (id: string | null) => void;
   children: (item: ListItemI) => string | null;
   data?: TransformedPlanetI[] | TransformedPersonI[] | TransformedStarshipI[];
