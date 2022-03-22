@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 
 import Header from "../header";
-import RandomPlanet from "../random-planet";
+import ErrorBoundary from "../error-boundary";
+import SwapiService from "../../services/swapi-service";
+// import DummySwapiService from "../../services/dummy-swapi-service";
 
-import "./app.css";
-import ErrorIndicator from "../error-indicator";
+import { SwapiServiceProvider } from "../swapi-service-context";
+
 import {
   PersonDetails,
   PersonList,
@@ -13,54 +15,34 @@ import {
   StarshipDetails,
   StarshipList,
 } from "../sw-components";
-import ErrorBoundary from "../error-boundary";
+
+import "./app.css";
 
 export default class App extends Component<{}, AppStateI> {
-  state = {
-    showRandomPlanet: true,
-    hasError: false,
-  };
-
-  componentDidCatch() {
-    this.setState({ hasError: true });
-  }
-
-  toggleRandomPlanet = () => {
-    this.setState((state) => {
-      return {
-        showRandomPlanet: !state.showRandomPlanet,
-      };
-    });
-  };
+  swapiService = new SwapiService();
 
   render() {
-    const { showRandomPlanet, hasError } = this.state;
-
-    const randomPlanet = showRandomPlanet ? <RandomPlanet /> : null;
-
-    if (hasError) {
-      return <ErrorIndicator />;
-    }
-
     return (
-      <div>
-        <Header />
-        <ErrorBoundary>
-          <PersonDetails itemId="11" />
-        </ErrorBoundary>
-        <PlanetDetails itemId="5" />
-        <StarshipDetails itemId="9" />
-        <PersonList />
-        <StarshipList />
-        <PlanetList />
-      </div>
+      <ErrorBoundary>
+        <SwapiServiceProvider value={this.swapiService}>
+          <div className="star-db-app">
+            <Header />
+            <ErrorBoundary>
+              <PersonDetails itemId="11" />
+            </ErrorBoundary>
+            <PlanetDetails itemId="5" />
+            <StarshipDetails itemId="9" />
+            <PersonList />
+            <StarshipList />
+            <PlanetList />
+          </div>
+        </SwapiServiceProvider>
+      </ErrorBoundary>
     );
   }
 }
 
 interface AppStateI {
-  showRandomPlanet: boolean;
-  hasError: boolean;
+  showRandomPlanet?: boolean;
+  hasError?: boolean;
 }
-
-// <PersonList>{(item: ListItemI) => `${item.name}`}</PersonList>
