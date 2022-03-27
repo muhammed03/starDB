@@ -1,7 +1,8 @@
 import React from "react";
 
-import Spinner from "../spinner";
-import ErrorIndicator from "../error-indicator";
-import withData from "./with-data";
+import WithData from "./with-data";
+import WithSwapiService from "./with-swapi-service";
+import WithChildFunction from "./with-child-function";
+import compose from "./compose";
 
-export default withData;
+export { WithData, WithSwapiService, WithChildFunction, compose };
