@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import Spinner from "../spinner";
 import {
-  ListItemI,
   TransformedPersonI,
   TransformedPlanetI,
   TransformedStarshipI,
-} from "../../services/types";
+} from "~/services/types";
 
-const withData = (View: React.FC<ItemListPropsType>, getData: GetDataType) => {
+const withData = (View: React.FC<ItemListPropsType>) => {
   return class extends Component<ItemListPropsType, WithDataStateI> {
     state = {
       data: null,
     };
 
     componentDidMount() {
-      getData().then((data) => {
+      const { getData } = this.props;
+
+      getData().then((data: any) => {
         this.setState({
           data,
         });
@@ -35,6 +36,7 @@ const withData = (View: React.FC<ItemListPropsType>, getData: GetDataType) => {
 type ItemListPropsType = {
   onItemSelected?: (id: string | null) => void;
   data?: TransformedPlanetI[] | TransformedPersonI[] | TransformedStarshipI[];
+  getData: any;
 };
 
 type GetDataType = () =>

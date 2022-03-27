@@ -2,19 +2,11 @@ import React from "react";
 
 import ItemDetails, { Record } from "../item-details";
 import withSwapiService from "../hoc-helper/with-swapi-service";
+import { DetailsPropsType } from "./sw-types";
 
-const StarshipDetails: React.FC<{ itemId: string; swapiService: any }> = ({
-  itemId,
-  swapiService,
-}) => {
-  const { getStarship, getStarshipImage } = swapiService;
-
+const StarshipDetails: React.FC<DetailsPropsType> = (props) => {
   return (
-    <ItemDetails
-      itemId={itemId}
-      getData={getStarship}
-      getImageUrl={getStarshipImage}
-    >
+    <ItemDetails {...props}>
       <Record field="model" label="Model" />
       <Record field="length" label="Length" />
       <Record field="costInCredits" label="Cost" />
@@ -22,4 +14,11 @@ const StarshipDetails: React.FC<{ itemId: string; swapiService: any }> = ({
   );
 };
 
-export default withSwapiService(StarshipDetails);
+const mapMethodsToProps = (swapiService: any) => {
+  return {
+    getData: swapiService.getStarship,
+    getImageUrl: swapiService.getStarshipImage,
+  };
+};
+
+export default withSwapiService(StarshipDetails, mapMethodsToProps);
