@@ -36,4 +36,8 @@ const ItemList: React.FC<ItemListPropsType> = (props) => {
   return <ul className="item-list list-group">{items}</ul>;
 };
 
+ItemList.defaultProps = {
+  onItemSelected: () => {},
+};
+
 export default ItemList;

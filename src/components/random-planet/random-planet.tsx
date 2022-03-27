@@ -43,7 +43,7 @@ const PlanetView: React.FC<PlanetViewPropsType> = (planet) => {
 
 export default class RandomPlanet extends Component<
   // eslint-disable-next-line @typescript-eslint/ban-types
-  {},
+  any,
   RandomPlanetStateI
 > {
   swapiService = new SwapiService();
